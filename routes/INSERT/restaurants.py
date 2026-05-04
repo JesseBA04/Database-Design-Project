@@ -1,4 +1,3 @@
-from database import conn
 def run(conn):
     # make a "cursor" which is an object to 
     # help us run SQL and fetch data
@@ -12,7 +11,7 @@ def run(conn):
     you_pass_eligible = input("Please enter if you_pass_eligible: ")
 
     # this time we'll use parameter binding
-    cur.execute("INSERT INTO restaurants VALUES (%s, %s, %s, %s, %s)", (restaurant_id, name, food_category, price_category, you_pass_eligible))
+    cur.execute("INSERT INTO \"Restaurants\" VALUES (%s, %s, %s, %s, %s)", (restaurant_id, name, food_category, price_category, you_pass_eligible))
 
     # commit the changes
     conn.commit()

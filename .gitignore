@@ -1,1 +1,3 @@
 pw.txt
+.gitignore
+__pycache__/
