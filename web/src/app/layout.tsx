@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { UserProvider } from "@/contexts/UserContext";
+import { CartProvider } from "@/contexts/CartContext";
 import Navbar from "@/components/Navbar";
 
 const geistSans = localFont({
@@ -31,8 +32,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-primary-50`}
       >
         <UserProvider>
-          <Navbar />
-          {children}
+          <CartProvider>
+            <Navbar />
+            {children}
+          </CartProvider>
         </UserProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCurrentUser } from "@/contexts/UserContext";
+import { useCart } from "@/contexts/CartContext";
 
 const navLinks = [
   { href: "/restaurants", label: "Restaurants" },
@@ -14,6 +15,7 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const { users, currentUser, setCurrentUserId, loading } = useCurrentUser();
+  const { itemCount } = useCart();
 
   return (
     <nav className="sticky top-0 z-40 bg-white border-b border-primary-100">
@@ -31,13 +33,18 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`transition-colors ${
+                className={`transition-colors flex items-center gap-1 ${
                   isActive
                     ? "text-primary font-semibold"
                     : "text-gray-700 hover:text-primary"
                 }`}
               >
                 {link.label}
+                {link.href === "/cart" && itemCount > 0 && (
+                  <span className="bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
               </Link>
             );
           })}
