@@ -88,3 +88,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
+export async function GET() {
+  try {
+    const rows = await sql`
+      SELECT 
+        o."Order_id",
+        o."Order_date",
+        o."Order_status",
+        o."Order_price",
+        o."Order_details",
+        r."Name" AS restaurant_name,
+        o."User_id"
+      FROM "Orders" o
+      LEFT JOIN "Restaurants" r ON o."Restaurant_id" = r."Restaurant_id"
+      ORDER BY o."Order_date" DESC, o."Order_id" DESC
+    `;
+
+    return NextResponse.json(rows);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
