@@ -1,46 +1,59 @@
-"use client";
+import Link from "next/link";
 
-import { useEffect, useState } from "react";
-
-type HealthResponse =
-  | { status: "ok"; restaurantCount: number }
-  | { status: "error"; message: string };
+const perks = [
+  {
+    title: "Skip the queue",
+    body: "Your order is ready when you arrive.",
+  },
+  {
+    title: "Member-only deals",
+    body: "Discounts at YouPass-eligible spots.",
+  },
+  {
+    title: "No fees",
+    body: "No service fees on YouPass orders.",
+  },
+];
 
 export default function Home() {
-  const [health, setHealth] = useState<HealthResponse | null>(null);
-
-  useEffect(() => {
-    fetch("/api/health")
-      .then((res) => res.json())
-      .then((data: HealthResponse) => setHealth(data))
-      .catch((err) =>
-        setHealth({ status: "error", message: (err as Error).message })
-      );
-  }, []);
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-primary-50 p-4">
-      <div className="bg-white rounded-2xl shadow-lg p-10 max-w-md w-full text-center">
-        {health === null ? (
-          <p className="text-gray-500 text-lg animate-pulse">
-            Checking database…
+    <>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-primary-600 to-accent py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-bold text-white">
+            Order ahead. Skip the line.
+          </h1>
+          <p className="text-xl text-primary-100 mt-4 max-w-2xl">
+            YouDash brings your favorite local spots to you — pick up faster
+            with YouPass.
           </p>
-        ) : health.status === "ok" ? (
-          <div className="text-primary">
-            <h1 className="text-5xl font-bold mb-3">YouDash</h1>
-            <p className="text-lg mb-1">Database connected ✓</p>
-            <p className="text-lg">
-              Restaurants in DB:{" "}
-              <span className="font-semibold">{health.restaurantCount}</span>
-            </p>
-          </div>
-        ) : (
-          <div className="text-red-600">
-            <h1 className="text-3xl font-bold mb-3">Connection Error</h1>
-            <p className="text-sm break-words">{health.message}</p>
-          </div>
-        )}
-      </div>
-    </div>
+          <Link
+            href="/restaurants"
+            className="mt-8 inline-block bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-colors"
+          >
+            Browse Restaurants
+          </Link>
+        </div>
+      </section>
+
+      {/* Why YouPass? */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <h2 className="text-3xl font-bold text-primary mb-8">Why YouPass?</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {perks.map((perk) => (
+            <div
+              key={perk.title}
+              className="bg-white p-6 rounded-lg shadow-sm border border-primary-100"
+            >
+              <h3 className="text-lg font-semibold text-primary mb-2">
+                {perk.title}
+              </h3>
+              <p className="text-gray-600">{perk.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
